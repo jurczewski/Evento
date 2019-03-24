@@ -3,7 +3,6 @@ using Evento.Core.Repositories;
 using Evento.Infrastructure.DTO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Evento.Infrastructure.Services

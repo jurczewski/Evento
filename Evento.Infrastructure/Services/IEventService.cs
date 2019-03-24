@@ -1,5 +1,4 @@
-﻿using Evento.Core.Domain;
-using Evento.Infrastructure.DTO;
+﻿using Evento.Infrastructure.DTO;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

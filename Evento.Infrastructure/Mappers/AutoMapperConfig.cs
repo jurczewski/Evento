@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using Evento.Core.Domain;
 using Evento.Infrastructure.DTO;
+using System.Linq;
 
 namespace Evento.Infrastructure.Mappers
 {
