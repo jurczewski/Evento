@@ -1,4 +1,6 @@
-﻿using Evento.Infrastructure.Services;
+﻿using Evento.Infrastructure.Commands.CreateEvent;
+using Evento.Infrastructure.Commands.Events;
+using Evento.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,6 +24,24 @@ namespace Evento.Api.Controllers
             var events = await _eventService.BrowseAsync(name);
 
             return Json(events);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]CreateEvent command)
+        {
+            command.EventId = Guid.NewGuid();
+            await _eventService.CreateAsync(command.EventId, command.Name, command.Description, command.StartDate, command.EndDate);
+            await _eventService.AddTicketsAsync(command.EventId, command.Tickets, command.Price);
+
+            return Created($"/event/{command.EventId}", null);
+        }
+
+        [HttpPut("{eventId}")]
+        public async Task<IActionResult> Put(Guid eventId, [FromBody]UpdateEvent command)
+        {
+            await _eventService.UpdateAsync(eventId, command.Name, command.Description);
+
+            return NoContent();
         }
     }
 }
