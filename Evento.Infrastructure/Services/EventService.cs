@@ -2,6 +2,7 @@
 using Evento.Core.Domain;
 using Evento.Core.Repositories;
 using Evento.Infrastructure.DTO;
+using Evento.Infrastructure.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,16 +18,16 @@ namespace Evento.Infrastructure.Services
             _eventRepository = eventRepository;
             _mapper = mapper;
         }
-        public async Task<EventDTO> GetAsync(Guid id)
+        public async Task<EventDetailsDto> GetAsync(Guid id)
         {
             var @event = await _eventRepository.GetAsync(id);
-            return _mapper.Map<EventDTO>(@event);
+            return _mapper.Map<EventDetailsDto>(@event);
         }
 
-        public async Task<EventDTO> GetAsync(string name)
+        public async Task<EventDetailsDto> GetAsync(string name)
         {
             var @event = await _eventRepository.GetAsync(name);
-            return _mapper.Map<EventDTO>(@event);
+            return _mapper.Map<EventDetailsDto>(@event);
         }
 
         public async Task<IEnumerable<EventDTO>> BrowseAsync(string name = null)
@@ -48,23 +49,14 @@ namespace Evento.Infrastructure.Services
 
         public async Task AddTicketsAsync(Guid eventId, int amount, decimal price)
         {
-            var @event = await _eventRepository.GetAsync(eventId);
-            if (@event == null)
-            {
-                throw new Exception($"Event with id: '{eventId}' does not exist.");
-            }
+            var @event = await _eventRepository.GetOrFailAsync(eventId);
             @event.AddTickets(amount, price);
             await _eventRepository.UpdateAsync(@event);
         }
 
         public async Task UpdateAsync(Guid id, string name, string description)
         {
-            var @event = await _eventRepository.GetAsync(id);
-            if (@event == null)
-            {
-                throw new Exception($"Event with id: '{id}' does not exist.");
-            }
-
+            var @event = await _eventRepository.GetOrFailAsync(id);
             @event = await _eventRepository.GetAsync(name);
             if (@event != null)
             {
@@ -78,7 +70,8 @@ namespace Evento.Infrastructure.Services
 
         public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var @event = await _eventRepository.GetOrFailAsync(id);
+            await _eventRepository.DeleteAsync(@event);
         }
     }
 }

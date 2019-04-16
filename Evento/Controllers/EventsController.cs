@@ -3,8 +3,6 @@ using Evento.Infrastructure.Commands.Events;
 using Evento.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Evento.Api.Controllers
@@ -26,6 +24,18 @@ namespace Evento.Api.Controllers
             return Json(events);
         }
 
+        [HttpGet("{eventId}")]
+        public async Task<IActionResult> Get(Guid eventId)
+        {
+            var @event = await _eventService.GetAsync(eventId);
+            if (@event == null)
+            {
+                return NotFound();
+            }
+
+            return Json(@event);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CreateEvent command)
         {
@@ -40,6 +50,14 @@ namespace Evento.Api.Controllers
         public async Task<IActionResult> Put(Guid eventId, [FromBody]UpdateEvent command)
         {
             await _eventService.UpdateAsync(eventId, command.Name, command.Description);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{eventId}")]
+        public async Task<IActionResult> Delete(Guid eventId)
+        {
+            await _eventService.DeleteAsync(eventId);
 
             return NoContent();
         }
