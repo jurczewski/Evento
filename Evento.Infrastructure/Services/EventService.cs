@@ -36,7 +36,7 @@ namespace Evento.Infrastructure.Services
 
         public async Task<IEnumerable<EventDTO>> BrowseAsync(string name = null)
         {
-            logger.Info("Fetching events");
+            logger.Info("Fetching events.");
             var events = await _eventRepository.BrowseAsync(name);
             return _mapper.Map<IEnumerable<EventDTO>>(events);
         }

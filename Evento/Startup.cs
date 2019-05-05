@@ -31,6 +31,7 @@ namespace Evento
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented);
+            services.AddMemoryCache();
             services.AddAuthorization(x => x.AddPolicy("HasAdminRole", p => p.RequireRole("admin")));
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -77,11 +78,10 @@ namespace Evento
             //loggerFactory.AddDebug(level);
             //loggerFactory.AddEventSourceLogger();
             loggerFactory.AddNLog();
-            app.AddNLogWeb();
             env.ConfigureNLog("nlog.config");
 
             app.UseAuthentication();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseMvc();
 
         }
