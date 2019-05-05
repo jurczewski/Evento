@@ -9,8 +9,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using NLog.Extensions.Logging;
+using NLog.Web;
 using System.Text;
 
 namespace Evento
@@ -59,7 +62,7 @@ namespace Evento
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -69,6 +72,14 @@ namespace Evento
             {
                 app.UseHsts();
             }
+            //var level = Configuration.GetSection("Logging:LogLevel:Default").GetValue<LogLevel>("Default");
+            //loggerFactory.AddConsole(level);
+            //loggerFactory.AddDebug(level);
+            //loggerFactory.AddEventSourceLogger();
+            loggerFactory.AddNLog();
+            app.AddNLogWeb();
+            env.ConfigureNLog("nlog.config");
+
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
