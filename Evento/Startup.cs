@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Evento.Api.Framework;
 using Evento.Core.Repositories;
 using Evento.Infrastructure;
 using Evento.Infrastructure.Mappers;
@@ -101,6 +102,7 @@ namespace Evento
             app.UseAuthentication();
             //app.UseHttpsRedirection();
             SeedData(app);
+            app.UseErrorHandler();
             app.UseMvc();
             appLifeTime.ApplicationStopped.Register(() => Container.Dispose());
         }
