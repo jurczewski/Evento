@@ -14,7 +14,7 @@ namespace Evento.Tests.Services
     public class UserServiceTests
     {
         [Fact]
-        public async Task register_async_should_invoke_add_async_on_user_respository()
+        public async Task Register_async_should_invoke_add_async_on_user_respository()
         {
             //Arrange
             var userRepositoryMock = new Mock<IUserRepository>();
@@ -30,7 +30,7 @@ namespace Evento.Tests.Services
         }
 
         [Fact]
-        public async Task when_invoking_get_async_it_should_inovke_on_user_repository()
+        public async Task When_invoking_get_async_it_should_inovke_on_user_repository()
         {
             //Arrange
             var user = new User(Guid.NewGuid(), "user", "test", "test@test.com", "secret");

@@ -10,7 +10,7 @@ namespace Evento.Tests.Respositories
     public class UserRepositoryTests
     {
         [Fact]
-        public async Task when_adding_new_user_it_should_be_added_correcty_to_the_list()
+        public async Task When_adding_new_user_it_should_be_added_correcty_to_the_list()
         {
             //Arrange
             var user = new User(Guid.NewGuid(), "user", "test", "test@test.com", "secret");
